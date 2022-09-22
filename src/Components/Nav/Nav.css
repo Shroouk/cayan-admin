@@ -1,0 +1,19 @@
+.home-link{
+    color: #fff;
+}
+
+.home-link:hover{
+    color: #db5f5b;
+}
+
+.brand-logo{
+    width: 75px;
+}
+
+.btn-light {
+    color: #db5f5b !important;
+}
+.btn-light:hover {
+    color: #000 !important;
+}
+
