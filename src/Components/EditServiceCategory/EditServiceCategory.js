@@ -3,17 +3,18 @@ import { useState } from "react";
 import Nav from '../Nav/Nav';
 import { useParams, withRouter } from "react-router";
 import { useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 
-const EditMainFunc = ()=> {
+const EditServiceCategory = ()=> {
 
 
   const navigate = useNavigate();
 
     const params = useParams();
 
-    const [mainFunc, setMainFunc] = useState("");
+    const [serviceCat, setserviceCat] = useState("");
     const [message, setMessage] = useState("");
 
 
@@ -21,24 +22,24 @@ const EditMainFunc = ()=> {
   
     
 
-    let handleEditMainFunc = async (e) => {
+    let handleEditServiceCategory = async (e) => {
         e.preventDefault();
         try {
-          let res = await fetch("https://backend.mo3ts.com/services/mainFunctions", {
+          let res = await fetch("https://backend.mo3ts.com/services/category", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization":localStorage.getItem("cayanToken")
             },
-            body: JSON.stringify([{
+            body: JSON.stringify({
                 id:params.id,
-              func: mainFunc,
-            }]),
+                serviceMainName: serviceCat,
+            }),
           });
           let resJson = await res.json();
           if (res.status === 200) {
-            setMainFunc("");
-            setMessage("Main function updated successfully");
+            setserviceCat("");
+            setMessage("service category updated successfully");
             console.log(resJson)
             setTimeout(
               () => navigate(-1), 
@@ -68,10 +69,15 @@ const EditMainFunc = ()=> {
         
 
             <>        
-            <Nav pageName="/ Main Function/ Edit" />
+            <Nav pageName="/ Service Category/ Edit" />
 
             <div className='container mt-5'>
-                <h3 className="section-title admin-career-section-title">Edit Main Function</h3> 
+
+            <div className='row'>
+              <div className='col-8'>  <h3 className="section-title admin-career-section-title">Edit Service Category</h3>  </div>
+              <div className='col-4'> <Link to={`/servicecatdetails/${+params.id}`}  className="btn btn-danger">View Service Details</Link></div>
+            </div>
+               
             </div>
 
             <div className='container'>
@@ -85,17 +91,17 @@ const EditMainFunc = ()=> {
 
                 <div className='form-wrapper'>
 
-                <form onSubmit={handleEditMainFunc}>
+                <form onSubmit={handleEditServiceCategory}>
                 <div className="mb-3">
-                    <label htmlFor="main-func" className="form-label">Main Function</label>
+                    <label htmlFor="main-func" className="form-label">Service Category</label>
                     <input 
                     type="text" 
                     className="form-control" 
                     id="main-func" 
                     required
-                    value={mainFunc}
-                    placeholder={params.func}
-                    onChange={(e) => setMainFunc(e.target.value)}/>
+                    value={serviceCat}
+                    placeholder={params.service}
+                    onChange={(e) => setserviceCat(e.target.value)}/>
                 </div>
                
              
@@ -117,4 +123,4 @@ const EditMainFunc = ()=> {
 
 }
 
-export default EditMainFunc;
+export default EditServiceCategory;

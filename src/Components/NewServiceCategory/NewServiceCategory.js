@@ -2,34 +2,32 @@ import React, { Component } from 'react';
 import { useState } from "react";
 import Nav from '../Nav/Nav';
 
-import './NewMainFunc.css'
 
-const NewMainFunc = ()=> {
+const NewServiceCategory = ()=> {
 
-    const [mainFunc, setMainFunc] = useState("");
+    const [serviceCat, setserviceCat] = useState("");
     const [message, setMessage] = useState("");
 
 
 
-    let handleAddMainFunc = async (e) => {
+    let handleAddserviceCat = async (e) => {
         e.preventDefault();
         try {
-          let res = await fetch("https://backend.mo3ts.com/services/mainFunctions", {
+          let res = await fetch("https://backend.mo3ts.com/services/category", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                //"Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NTQ1MjUzMzksImV4cCI6MTY1NDUzMjUzOX0.sJNNiYuS8FqioZZ-uCVrT4I0rPuphVn6p2uptUaHFPw"
                 "Authorization":localStorage.getItem("cayanToken")
             },
-            body: JSON.stringify([{
+            body: JSON.stringify({
                 
-              func: mainFunc,
-            }]),
+                serviceMainName: serviceCat,
+            }),
           });
           let resJson = await res.json();
           if (res.status === 200) {
-            setMainFunc("");
-            setMessage("Main function created successfully");
+            setserviceCat("");
+            setMessage("Service Category created successfully");
             console.log(resJson)
           } else {
             setMessage("Some error occured");
@@ -45,10 +43,10 @@ const NewMainFunc = ()=> {
         
 
             <>        
-            <Nav pageName="/ Main Function/Add" />
+            <Nav pageName="/ Service Category /Add" />
 
             <div className='container mt-5'>
-                <h3 className="section-title admin-career-section-title">Add New Main Function</h3> 
+                <h3 className="section-title admin-career-section-title">Add New Service Category </h3> 
             </div>
 
             <div className='container'>
@@ -56,20 +54,19 @@ const NewMainFunc = ()=> {
 
             {msg}
 
-
                 <div className='form-wrapper'>
 
-                <form onSubmit={handleAddMainFunc}>
+                <form onSubmit={handleAddserviceCat}>
                 <div className="mb-3">
-                    <label htmlFor="main-func" className="form-label">Main Function</label>
+                    <label htmlFor="main-func" className="form-label">Service Category</label>
                     <input 
                     type="text" 
                     required
                     className="form-control" 
                     id="main-func" 
-                    value={mainFunc}
-                    placeholder="Enter new main function"
-                    onChange={(e) => setMainFunc(e.target.value)}/>
+                    value={serviceCat}
+                    placeholder="Enter new Service Category"
+                    onChange={(e) => setserviceCat(e.target.value)}/>
                 </div>
                
              
@@ -91,4 +88,4 @@ const NewMainFunc = ()=> {
 
 }
 
-export default NewMainFunc;
+export default NewServiceCategory;

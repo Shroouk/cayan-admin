@@ -49,6 +49,8 @@ const Login  = (props)=> {
             console.log(result.cayanToken)
             localStorage.setItem("user-info",JSON.stringify(result));
             localStorage.setItem("cayanToken","Bearer "+result.cayanToken);
+            
+            console.log("Bearer "+result.cayanToken)
             navigate('/dashboard');
             
 

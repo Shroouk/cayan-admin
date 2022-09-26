@@ -96,9 +96,9 @@ const AdminContact = ()=> {
          
 
           <div className='row'>
-                      {message ?    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                      {message ?    <div className="alert alert-info alert-dismissible fade show" role="alert">
                       {<p>{message}</p> }
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div> : null}
           </div>
 

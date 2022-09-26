@@ -75,11 +75,12 @@ const AdminAbout = ()=> {
 
 
 
-    function selectaboutUs(i){
+    function selectaboutUs(i,id){
       let item=aboutUs[i];
       console.log(i)
       settitle(item.title)
       setaboutUsId(item.id)
+      console.log(aboutUsId)
       setcontent(item.content)
     }
 
@@ -152,7 +153,7 @@ const AdminAbout = ()=> {
         let resJson = await res.json();
         if (res.status === 200) {
           setMessage("about us updatedddd successfully");
-        //  console.log(resJson)
+          console.log(resJson)
           getaboutUs()
         } else {
           setMessage("Some error occured");
@@ -180,9 +181,9 @@ const AdminAbout = ()=> {
          
 
           <div className='row'>
-                      {message ?    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                      {message ?    <div className="alert alert-info alert-dismissible fade show" role="alert">
                       {<p>{message}</p> }
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div> : null}
           </div>
 
@@ -206,7 +207,7 @@ const AdminAbout = ()=> {
                     <td>{item.title}</td>
                     <td>
                         
-                        <button className="btn btn-primary edit-btn" onClick={() => selectaboutUs(i)}>Update</button>
+                        <button className="btn btn-primary edit-btn" onClick={() => selectaboutUs(i,item.id)}>Update</button>
                       {/*   <button className="btn btn-danger delete-btn" onClick={() => deleteaboutUs(i)}>Delete</button> */}
                     </td>
                     
@@ -234,14 +235,14 @@ const AdminAbout = ()=> {
 
             
             <div>
-            <div class="mb-3">
-            <label class="form-label custom-form-label">Title: </label> 
+            <div className="mb-3">
+            <label className="form-label custom-form-label">Title: </label> 
             <input className="form-control"  type="text" value={title} onChange={(e)=>{settitle(e.target.value)}} /> <br /><br />
             </div>
            
 
-            <label class="form-label custom-form-label">About Us Content </label>    
-            <div class="mb-3" >
+            <label className="form-label custom-form-label">About Us Content </label>    
+            <div className="mb-3" >
             
             <textarea className="form-control" rows="10"  type="text" value={content}  onChange={(e)=>{setcontent(e.target.value)}} />
             </div>
