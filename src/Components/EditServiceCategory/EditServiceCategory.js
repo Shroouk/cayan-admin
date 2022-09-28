@@ -74,7 +74,7 @@ const EditServiceCategory = ()=> {
             <div className='container mt-5'>
 
             <div className='row'>
-              <div className='col-8'>  <h3 className="section-title admin-career-section-title">Edit Service Category</h3>  </div>
+              <div className='col-8'>  <h3 className="section-title admin-career-section-title">Edit <span className='text-danger'> {params.service}</span></h3>  </div>
               <div className='col-4'> <Link to={`/servicecatdetails/${+params.id}`}  className="btn btn-danger">View Service Details</Link></div>
             </div>
                

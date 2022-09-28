@@ -25,6 +25,8 @@ import AdminMainFunctions from './Components/AdminMainFunctions/AdminMainFunctio
 import NewServiceCategory from './Components/NewServiceCategory/NewServiceCategory';
 import EditServiceCategory from './Components/EditServiceCategory/EditServiceCategory';
 import ServiceCatDetails from './Components/ServiceCatDetails/ServiceCatDetails';
+import NewService from './Components/NewService/NewService';
+import EditServiceList from './Components/EditServiceList/EditServiceList';
 
 
 
@@ -82,10 +84,12 @@ const App  = ()=> {
 
         <Route path="/edit-mainfunc/:id/:func" element={<EditMainFunc/>} />
         <Route path="/edit-servicecat/:id/:service" element={<EditServiceCategory/>} />
+        <Route path="/edit-service-list/:mainid/:id" element={<EditServiceList/>} />
 
         <Route path="/new-main-func" element={<NewMainFunc/>} />
         {/* <Route path="/new-about-us" element={<NewAboutUs/>} /> */}
         <Route path="/new-service-category" element={<NewServiceCategory/>} />
+        <Route path="/new-service/:id" element={<NewService/>} />
 
         <Route exact path='/' component={Login}/>
         

@@ -8,6 +8,9 @@ import './AdminAbout.css'
 
 const AdminAbout = ()=> {
 
+
+  
+
     const [aboutUs, setaboutUs] = useState([])
     const [title, settitle] = useState("");
     const [content, setcontent] = useState("");
@@ -32,7 +35,7 @@ const AdminAbout = ()=> {
         })
       })
     }
-  
+   
     /* function deleteaboutUs(id) {
       fetch(`https://backend.mo3ts.com/aboutUs/${aboutUsId}`, {
         method: 'DELETE'

@@ -4,9 +4,13 @@ import { Link } from 'react-router-dom';
 import { useState } from "react";
 import Nav from '../Nav/Nav';
 import { useParams, withRouter } from "react-router";
+import { useNavigate} from 'react-router-dom';
 
 
 const ServiceCatDetails = ()=> {
+
+  const params = useParams();
+  const navigate = useNavigate();
 
     const [serviceCatDetails, setserviceCatDetails] = useState([])
     const [serviceName, setserviceName] = useState("");
@@ -14,24 +18,35 @@ const ServiceCatDetails = ()=> {
 
     const [serviceCatDetailsId,setserviceCatDetailsId]=useState(1);
    
+    const [serviceMainId,setserviceMainId]=useState(params.id);
 
     const [message, setMessage] = useState("");
 
 
 
-    const params = useParams();
-    const serviceMainId = params.id;
+   
+
   
     useEffect(() => {
       getserviceCatDetails();
     }, [])
     function getserviceCatDetails() {
-      fetch(`https://backend.mo3ts.com/services/${serviceCatDetailsId}`).then((result) => {
+      fetch(`https://backend.mo3ts.com/services/${serviceMainId}`).then((result) => {
+       
         result.json().then((resp) => {
+        if(resp.Services.length != 0){
+
           setserviceCatDetails(resp.Services)
           setserviceName(resp.Services[0].serviceName)
           setserviceCatDetailsId(resp.Services[0].id)
           setserviceDescription(resp.Services[0].serviceDescription)
+
+        }else{
+           navigate(`/new-service/${serviceMainId}`)
+        }
+         
+         
+          
           
         })
       })
@@ -47,15 +62,15 @@ const ServiceCatDetails = ()=> {
       
       if(window.confirm("Are you sure you want to delete this ٍservice section")){
         try {
-            let resl = await fetch(`https://backend.mo3ts.com/serviceCatDetails/${serviceCatDetailsId}`, {
+            let resl = await fetch(`https://backend.mo3ts.com/services/service`, {
               method: "DELETE",
               headers: {
                   "Content-Type": "application/json",
                   "Authorization":localStorage.getItem("cayanToken")
               },
-              body: JSON.stringify([{   
+              body: JSON.stringify({   
                 id: serviceCatDetailsId,
-              }]),
+              }),
             });
             let reslJson = await resl.json();
             if (resl.status === 200) {
@@ -73,7 +88,7 @@ const ServiceCatDetails = ()=> {
 
     function selectserviceCatDetails(i){
       let item=serviceCatDetails[i];
-      console.log(i)
+      
       setserviceName(item.serviceName)
       setserviceCatDetailsId(item.id)
       setserviceDescription(item.serviceDescription)
@@ -89,31 +104,36 @@ const ServiceCatDetails = ()=> {
 
 
     let updateserviceCatDetails = async (e) => {
-      let item={serviceMainId,serviceName,serviceDescription,serviceCatDetailsId}
+      let item={serviceCatDetailsId,serviceName,serviceDescription,serviceMainId}
+      console.log(item)
       e.preventDefault();
       try {
-        let res = await fetch(`https://backend.mo3ts.com/serviceCatDetails/${serviceCatDetailsId}`, {
+        let res = await fetch(`https://backend.mo3ts.com/services/service`, {
           method: "PUT",
           headers: {
-              "serviceDescription-Type": "application/json",
+              "Content-Type": "application/json",
               "Authorization":localStorage.getItem("cayanToken")
           },
-          body:JSON.stringify(item),
+          body:JSON.stringify({
+            id:serviceCatDetailsId,
+            serviceName:serviceName,
+            serviceDescription:serviceDescription,
+            ServicesMainId:serviceMainId
+          }),
         });
         let resJson = await res.json();
         if (res.status === 200) {
-          setMessage("service updated successfully");
+          setMessage("service updatedd successfully");
           console.log(resJson)
 
           getserviceCatDetails()
         } else {
-          setMessage("Some error occured");
+          alert("Some error occured");
         }
       } catch (err) {
         console.log(err);
       }
     };
-
 
 
 
@@ -154,12 +174,14 @@ const ServiceCatDetails = ()=> {
                 {
                 serviceCatDetails.map((item, i) =>
                     <tr key={i}>
-                    <td>{item.id}</td>
+                    <td>{i}</td>
                     <td>{item.serviceName}</td>
                     <td>
                         
                         <button className="btn btn-primary edit-btn" onClick={() => selectserviceCatDetails(i)}>Update</button>
                         <button className="btn btn-danger delete-btn" onClick={() => deleteserviceCatDetails(i)}>Delete</button> 
+                        <Link to={`/edit-service-list/${serviceMainId}/${item.id}`}  className="btn btn-warning ml-3 edit-btn">List</Link>
+                        
                     </td>
                     
     
@@ -183,12 +205,12 @@ const ServiceCatDetails = ()=> {
             
             <div>
             <div className="mb-3">
-            <label className="form-label custom-form-label">serviceName: </label> 
+            <label className="form-label custom-form-label">service Name: </label> 
             <input className="form-control"  type="text" value={serviceName} onChange={(e)=>{setserviceName(e.target.value)}} /> <br /><br />
             </div>
            
 
-            <label className="form-label custom-form-label">ٍservice serviceDescription </label>    
+            <label className="form-label custom-form-label">service service Description </label>    
             <div className="mb-3" >
             
             <textarea className="form-control" rows="10"  type="text" value={serviceDescription}  onChange={(e)=>{setserviceDescription(e.target.value)}} />
@@ -200,8 +222,20 @@ const ServiceCatDetails = ()=> {
         </div>
        
         
+
+        <div className='row new-btn-wrapper'>
+                    <Link to={`/new-service/${serviceMainId}`} className="admin-sec-read-btn">Add New Service</Link>
+
+                   
+                    </div>
+
       </div>
       </>
     );
   }
 export default ServiceCatDetails;
+
+
+
+
+
