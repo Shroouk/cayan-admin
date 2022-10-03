@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useState } from "react";
@@ -95,9 +95,35 @@ const ServiceCatDetails = ()=> {
       
     }
 
+/* 
 
-
-
+    const  deleteserviceList = async(id)=>{
+         
+console.log(id)
+      
+      if(window.confirm("Are you sure you want to delete this service List")){
+        try {
+            let resl = await fetch(`https://backend.mo3ts.com/services/service/list`, {
+              method: "DELETE",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization":localStorage.getItem("cayanToken")
+              },
+              body: JSON.stringify({   
+                id: id,
+              }),
+            });
+            let reslJson = await resl.json();
+            if (resl.status === 200) {
+                
+              
+            } else {
+            }
+          } catch (err) {
+            console.log(err);
+          }
+      }
+        } */
    
  
 
@@ -179,8 +205,9 @@ const ServiceCatDetails = ()=> {
                     <td>
                         
                         <button className="btn btn-primary edit-btn" onClick={() => selectserviceCatDetails(i)}>Update</button>
-                        <button className="btn btn-danger delete-btn" onClick={() => deleteserviceCatDetails(i)}>Delete</button> 
-                        <Link to={`/edit-service-list/${serviceMainId}/${item.id}`}  className="btn btn-warning ml-3 edit-btn">List</Link>
+                        <button className="btn btn-danger delete-btn edit-btn mr-3" onClick={() => deleteserviceCatDetails(item.id)}>Delete</button>
+                {/*         <button className="btn btn-danger delete-btn" onClick={() => deleteserviceList(item.id)}>Delete List</button>  */}
+                        <Link to={`/edit-service-list/${serviceMainId}/${item.id}`}  className="btn btn-warning edit-btn">List</Link>
                         
                     </td>
                     

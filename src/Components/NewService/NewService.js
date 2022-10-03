@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { useState } from "react";
 import Nav from '../Nav/Nav';
-import { useParams, withRouter } from "react-router";
+import { useParams } from "react-router";
 import { useNavigate} from 'react-router-dom';
 
 const NewService = ()=> {

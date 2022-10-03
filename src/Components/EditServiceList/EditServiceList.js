@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useState } from "react";
@@ -54,23 +54,51 @@ const ServiceList = ()=> {
     }
 
 
-  
+    const handleFormChange = (index, event) => {
+      let data = [...serviceContent];
+      data[index] = event.target.value;
+      setserviceContent(data);
+      
+   }
+
+   let contentdata =[];
+
+   const handleFormAdd = (event) => {
+     contentdata =[...serviceContent];
+   // let contentdata = [...serviceContent];
+   
+    contentdata[contentdata.length] = "";
+    
+    contentdata[contentdata.length] = event.target.value;
+    contentdata.splice(contentdata.length -2, 1)
+
+    console.log(contentdata.length,contentdata)
    
 
-    const  deleteserviceList = async(id,e)=>{
+    
+
+   // setserviceContent(contentdata);
+    
+
+    
+ }
+
+
+
+    const  deleteserviceList = async()=>{
          
 
       
       if(window.confirm("Are you sure you want to delete this ٍservice section")){
         try {
-            let resl = await fetch(`https://backend.mo3ts.com/services/service`, {
+            let resl = await fetch(`https://backend.mo3ts.com/services/service/list`, {
               method: "DELETE",
               headers: {
                   "Content-Type": "application/json",
                   "Authorization":localStorage.getItem("cayanToken")
               },
               body: JSON.stringify({   
-                id: serviceListId,
+                id: serviceId,
               }),
             });
             let reslJson = await resl.json();
@@ -89,7 +117,7 @@ const ServiceList = ()=> {
 
     function selectserviceList(i){
       let item=serviceList[i];
-   
+  
           setlistTitle(item.listTitle)
           setserviceListId(item.id)
           setserviceContent(item.content)
@@ -112,7 +140,7 @@ const ServiceList = ()=> {
       e.preventDefault();
       try {
         let res = await fetch(`https://backend.mo3ts.com/services/service/list`, {
-          method: "PUT",
+          method: "POST",
           headers: {
               "Content-Type": "application/json",
               "Authorization":localStorage.getItem("cayanToken")
@@ -120,7 +148,7 @@ const ServiceList = ()=> {
           body:JSON.stringify({
             id:serviceListId,
             listTitle:listTitle,
-            serviceContent:serviceContent,
+            content:serviceContent,
             
           }),
         });
@@ -141,20 +169,25 @@ const ServiceList = ()=> {
 
 
     let handleAddserviceList = async (e) => {
-        let item={serviceListId,listTitle,serviceContent}
-        console.log(item)
+      
+      console.log(serviceListId)
+      
+        //let item={serviceListId,listTitle,serviceContent}
+        //console.log(item)
         e.preventDefault();
         try {
+          setserviceContent(contentdata);
           let res = await fetch(`https://backend.mo3ts.com/services/service/list`, {
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization":localStorage.getItem("cayanToken")
             },
             body:JSON.stringify({
-              ServiceId:serviceListId,
+            //  ServiceId:serviceListId,
+            ServiceId:serviceListId,
               listTitle:listTitle,
-              content:serviceContent,
+              content:contentdata,
               
             }),
           });
@@ -172,7 +205,7 @@ const ServiceList = ()=> {
         }
       };
 
-      console.log(serviceContent)
+     
 
 
 
@@ -209,7 +242,7 @@ const ServiceList = ()=> {
             <tbody>
                 
                 {
-                serviceList.map((item, i) =>
+                  serviceList.map((item, i) =>
                     <tr key={i}>
                     <td>{i}</td>
                     <td>{item.listTitle}</td>
@@ -251,11 +284,11 @@ const ServiceList = ()=> {
 
             {
                 
-                serviceContent.map((item, i)=>
+              serviceContent.map((item, i)=>
                 (
                     <div className="mb-3" key={i}>
             
-                    <input className="form-control"   type="text" value={item}  onChange={(e)=>{setserviceContent({i:e.target.value})}} />
+                    <input className="form-control" name="content"   type="text" value={item}  onChange={(e)=>handleFormChange(i,e)} />
                     </div>
 
                 ))
@@ -267,47 +300,53 @@ const ServiceList = ()=> {
            
             <button className="admin-sec-read-btn" onClick={updateserviceList} >Update service List</button>  
             </div>
+
+
+
+
+
+            <div className='containerr mt-5' >
+
+            <div className='row new-btn-wrapper'>
+            {/* <Link to={`/new-service/${serviceMainId}`} className="admin-sec-read-btn">Add New Service</Link> */}
+            <h3 className="section-listTitle admin-career-section-listTitle">Add New Service List Data  </h3> 
+           
+            </div>
+
+            <div className='form-wrapper'>
+
+                <form onSubmit={handleAddserviceList}>
+                <div className="mb-3">
+                    <label htmlFor="serviceName" className="form-label">Service Name</label>
+                    <input 
+                    type="text" 
+                    required
+                    className="form-control" 
+                    id="serviceName" 
+                    
+                    placeholder="Enter new Service list"
+                    onChange={(e) => handleFormAdd(e)}
+                  //  onBlur={(e) => setserviceContent(oldContent => [...oldContent, e.target.value])}    
+                    />
+
+                
+                </div>
+           
+
+
+
+                <button type="submit" className="admin-sec-read-btn">Add</button>
+
+
+
+                </form>
+             </div>
+            </div>    
             </div>
         </div>
        
         
-        <div className='container'>
-
-        <div className='row new-btn-wrapper'>
-                    {/* <Link to={`/new-service/${serviceMainId}`} className="admin-sec-read-btn">Add New Service</Link> */}
-                    <h3 className="section-listTitle admin-career-section-listTitle">Add New Service List Data  </h3> 
-                   
-                    </div>
-
-                    <div className='form-wrapper'>
-
-                        <form onSubmit={handleAddserviceList}>
-                        <div className="mb-3">
-                            <label htmlFor="serviceName" className="form-label">Service Name</label>
-                            <input 
-                            type="text" 
-                            required
-                            className="form-control" 
-                            id="serviceName" 
-                            
-                            placeholder="Enter new Service list"
-                           // onChange={(e) => setserviceName(e.target.value)}
-                            onBlur={(e) => setserviceContent(oldContent => [...oldContent, e.target.value])}    
-                            />
-
-                        
-                        </div>
-                   
-
-
-
-                        <button type="submit" className="admin-sec-read-btn">Save</button>
-
-
-
-                        </form>
-</div>
-        </div>    
+  
 
       </div>
       </>
