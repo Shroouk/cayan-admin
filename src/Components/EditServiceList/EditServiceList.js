@@ -185,7 +185,7 @@ const ServiceList = ()=> {
             },
             body:JSON.stringify({
             //  ServiceId:serviceListId,
-            ServiceId:serviceListId,
+              ServiceId:serviceId,
               listTitle:listTitle,
               content:contentdata,
               
