@@ -5,7 +5,7 @@ import { useState } from "react";
 import Nav from '../Nav/Nav';
 import { useParams, withRouter } from "react-router";
 import { useNavigate} from 'react-router-dom';
-
+import axios from "axios";
 
 const ServiceList = ()=> {
 
@@ -20,6 +20,8 @@ const ServiceList = ()=> {
    
     const [serviceMainId,setserviceMainId]=useState(params.mainid);
     const [serviceId,setserviceId]=useState(params.id);
+
+    const [serviceImgs, setServiceImgs] =  useState([])
 
     const [message, setMessage] = useState("");
 
@@ -42,7 +44,7 @@ const ServiceList = ()=> {
           setserviceListId(resp.lists[0].id)
           setserviceContent(resp.lists[0].content)
 
-        }else{
+        }else if(resp.lists.length == 0){
            navigate(`/new-service-list/${serviceMainId}/${serviceId}`)
         }
          
@@ -85,10 +87,110 @@ const ServiceList = ()=> {
 
 
 
-    const  deleteserviceList = async()=>{
-         
 
-      
+
+
+
+
+
+
+
+
+
+
+
+const handleImageChange = (e) => {
+  setServiceImgs([])
+  if(e.target.files){
+    const fileArr = Array.from(e.target.files).map((file)=>URL.createObjectURL(file));
+    setServiceImgs((prevImages)=>prevImages.concat(fileArr));
+    Array.from(e.target.files).map(
+      (file)=> URL.revokeObjectURL(file)
+    )
+   
+  }
+console.log(serviceImgs)
+}
+
+
+
+const renderImgs = (source)=>{
+  return source.map((photo)=>{
+      return <img className='p-2' src={photo} alt="cayan-service-image" key={photo} style={{width:"20%", height:"180px"}}/>
+  })
+}
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  var files = e.target[0].files;
+  
+  let formData = new FormData(); 
+  for(let i =0; i<files.length;i++){
+    formData.append('images', files[i]);
+  }
+
+/*   axios({
+    url:`https://backend.mo3ts.com/services/imgs/service/${serviceId}`,
+    
+    method:"PATCH",
+    data:formData
+  }).then((res)=>{
+    console.log(res)
+  }) */
+
+/*   axios.patch(`https://backend.mo3ts.com/services/imgs/service/${serviceId}`,
+            { data:formData },
+            { headers: { "Content-Type": "multipart/form-data",
+            "Authorization":localStorage.getItem("cayanToken")}, }
+        ).then((res) => {
+          console.log(res.data);
+        }).catch((error) => {
+          console.log(error);
+        })
+ */
+
+
+  axios.patch(`https://backend.mo3ts.com/services/imgs/service/${serviceId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Authorization":localStorage.getItem("cayanToken")
+    }
+  })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => console.log(err)) 
+}; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const  deleteserviceList = async(i)=>{
+         
+     
+      console.log(i)
       if(window.confirm("Are you sure you want to delete this ٍservice section")){
         try {
             let resl = await fetch(`https://backend.mo3ts.com/services/service/list`, {
@@ -98,7 +200,7 @@ const ServiceList = ()=> {
                   "Authorization":localStorage.getItem("cayanToken")
               },
               body: JSON.stringify({   
-                id: serviceId,
+                id: i,
               }),
             });
             let reslJson = await resl.json();
@@ -110,10 +212,28 @@ const ServiceList = ()=> {
           } catch (err) {
             console.log(err);
           }
-      }
+      } 
         }
 
 
+
+const deleteserviceContent = async (i)=>{
+
+        var filtered = serviceContent.filter(function(value, index, arr){ 
+          return index != i;
+      });
+
+        try{
+          if(window.confirm("Are you sure you want to delete this service content")){
+            setserviceContent(filtered);
+          }
+        } catch(err){
+          console.log(err);
+        }
+        
+
+  
+}
 
     function selectserviceList(i){
       let item=serviceList[i];
@@ -157,7 +277,10 @@ const ServiceList = ()=> {
           setMessage("service list updatedd successfully");
           console.log(resJson)
 
-          getserviceList()
+          getserviceList();
+          setTimeout(()=>{setMessage("")}, 5000);
+          
+
         } else {
           alert("Some error occured");
         }
@@ -170,21 +293,19 @@ const ServiceList = ()=> {
 
     let handleAddserviceList = async (e) => {
       
-      console.log(serviceListId)
+      console.log(serviceId)
       
-        //let item={serviceListId,listTitle,serviceContent}
-        //console.log(item)
         e.preventDefault();
         try {
           setserviceContent(contentdata);
-          let res = await fetch(`https://backend.mo3ts.com/services/service/list`, {
+        /*   let res = await fetch(`https://backend.mo3ts.com/services/service/list`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization":localStorage.getItem("cayanToken")
             },
             body:JSON.stringify({
-            //  ServiceId:serviceListId,
+            
               ServiceId:serviceId,
               listTitle:listTitle,
               content:contentdata,
@@ -199,35 +320,45 @@ const ServiceList = ()=> {
             getserviceList()
           } else {
             alert("Some error occured");
-          }
+          } */
         } catch (err) {
           console.log(err);
         }
       };
 
      
-
-
+    
 
     return (
 
         <>
 
-<Nav pageName="/ service" />
+<Nav pageName="/ service List" />
 
-        <div className='container mt-5'>
-                    <h3 className="section-listTitle admin-career-section-listTitle">Update Service List Data  </h3> 
+        <div className='container my-5'>
+
+        <div className='row'>
+                      {message ?    <div className="alert alert-info alert-dismissible fade show" role="alert">
+                      {<p>{message}</p> }
+                       
+                      </div> : null}
+          </div>
+
+
+                  <div className='row'>
+                    <div className='col-8'>
+                    <h3 className="section-listTitle section-title admin-career-section-listTitle">Update Service List Data  </h3> 
+                    </div>
+                    <div className='col-4 text-center'>
+                    <button className="admin-sec-read-btn save-btn" onClick={updateserviceList} >Save Changes</button>  
+                    </div>
+                  </div>
+                   
                 </div>
       <div className="container">
          
 
-          <div className='row'>
-                      {message ?    <div className="alert alert-info alert-dismissible fade show" role="alert">
-                      {<p>{message}</p> }
-                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div> : null}
-          </div>
-
+          
 
         <div className='row'>
             <div className='col-8'>
@@ -246,10 +377,10 @@ const ServiceList = ()=> {
                     <tr key={i}>
                     <td>{i}</td>
                     <td>{item.listTitle}</td>
-                    <td>
+                    <td className='td-actionlist'>
                         
                         <button className="btn btn-primary edit-btn" onClick={() => selectserviceList(i)}>Update</button>
-                        <button className="btn btn-danger delete-btn" onClick={() => deleteserviceList(i)}>Delete</button> 
+                        <button className="btn btn-danger delete-btn" onClick={() => deleteserviceList(item.id)}>Delete</button> 
                        
                         
                     </td>
@@ -275,12 +406,12 @@ const ServiceList = ()=> {
             
             <div>
             <div className="mb-3">
-            <label className="form-label custom-form-label">service Name: </label> 
+            <label className="form-label custom-form-label">List Title: </label> 
             <input className="form-control"  type="text" value={listTitle} onChange={(e)=>{setlistTitle(e.target.value)}} /> <br /><br />
             </div>
            
 
-            <label className="form-label custom-form-label">service service Description </label>    
+            <label className="form-label custom-form-label">Service List Content </label>    
 
             {
                 
@@ -288,8 +419,15 @@ const ServiceList = ()=> {
                 (
                     <div className="mb-3" key={i}>
             
-                    <input className="form-control" name="content"   type="text" value={item}  onChange={(e)=>handleFormChange(i,e)} />
+                    {/* <input className="form-control col-8" name="content"   type="text" value={item}  onChange={(e)=>handleFormChange(i,e)} />
+                    <button className="btn btn-danger delete-btn col-2" onClick={() => deleteserviceList(i)}>X</button>  */}
+
+                    <div className="input-group mb-3">
+                      <input type="text" className="form-control" name="content"   value={item}  onChange={(e)=>handleFormChange(i,e)} />
+                      <span className="input-group-textt" id="basic-addon2"><button className="btn btn-danger delete-btn rounded-circle ml-3 content-del-btn" onClick={() => deleteserviceContent(i)}>X</button> </span>
                     </div>
+                    </div>
+                    
 
                 ))
             }
@@ -298,7 +436,7 @@ const ServiceList = ()=> {
             <textarea className="form-control" rows="10"  type="text" value={serviceContent}  onChange={(e)=>{setserviceContent(e.target.value)}} />
             </div> */}
            
-            <button className="admin-sec-read-btn" onClick={updateserviceList} >Update service List</button>  
+            {/* <button className="admin-sec-read-btn" onClick={updateserviceList} >Save Changes</button>   */}
             </div>
 
 
@@ -317,7 +455,7 @@ const ServiceList = ()=> {
 
                 <form onSubmit={handleAddserviceList}>
                 <div className="mb-3">
-                    <label htmlFor="serviceName" className="form-label">Service Name</label>
+                    {/* <label htmlFor="serviceName" className="form-label">Service Name</label> */}
                     <input 
                     type="text" 
                     required
@@ -346,6 +484,37 @@ const ServiceList = ()=> {
         </div>
        
         
+
+
+
+        <div className='row'>
+        <h3 className="section-listTitle section-title admin-career-section-listTitle">Service Images </h3> 
+
+            <div className='card w-75 p-5'>
+            <div className='card-body'>
+        <form onSubmit={(e)=>handleSubmit(e)} encType="multipart/form-data">
+          <input type="file"
+                 name="file" 
+                 id="images"
+                 accept="image/png, image/jpeg" 
+                 multiple
+                 onChange={(e)=>handleImageChange(e)}
+          />
+            <br />
+            <br />
+            <button type="submit" className='admin-sec-read-btn'>
+              Upload
+            </button>
+          </form> 
+        </div>
+            </div>
+
+        
+
+
+            <div className='row'>{renderImgs(serviceImgs)}</div>
+       
+        </div>
   
 
       </div>

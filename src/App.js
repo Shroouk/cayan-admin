@@ -27,6 +27,7 @@ import EditServiceCategory from './Components/EditServiceCategory/EditServiceCat
 import ServiceCatDetails from './Components/ServiceCatDetails/ServiceCatDetails';
 import NewService from './Components/NewService/NewService';
 import EditServiceList from './Components/EditServiceList/EditServiceList';
+import NewServiceList from './Components/NewServiceList/NewServiceList';
 
 
 
@@ -85,6 +86,8 @@ const App  = ()=> {
         <Route path="/edit-mainfunc/:id/:func" element={<EditMainFunc/>} />
         <Route path="/edit-servicecat/:id/:service" element={<EditServiceCategory/>} />
         <Route path="/edit-service-list/:mainid/:id" element={<EditServiceList/>} />
+
+        <Route path="/new-service-list/:mainid/:id" element={<NewServiceList/>} />
 
         <Route path="/new-main-func" element={<NewMainFunc/>} />
         {/* <Route path="/new-about-us" element={<NewAboutUs/>} /> */}
