@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { useState } from "react";
+
+import { useNavigate} from 'react-router-dom';
+
 import Nav from '../Nav/Nav';
 
 import './NewMainFunc.css'
@@ -9,7 +12,7 @@ const NewMainFunc = ()=> {
     const [mainFunc, setMainFunc] = useState("");
     const [message, setMessage] = useState("");
 
-
+    const navigate = useNavigate();
 
     let handleAddMainFunc = async (e) => {
         e.preventDefault();
@@ -31,6 +34,10 @@ const NewMainFunc = ()=> {
             setMainFunc("");
             setMessage("Main function created successfully");
             console.log(resJson)
+            setTimeout(
+              () => navigate(-1), 
+              3000
+            );
           } else {
             setMessage("Some error occured");
           }

@@ -155,9 +155,10 @@ const AdminAbout = ()=> {
         });
         let resJson = await res.json();
         if (res.status === 200) {
-          setMessage("about us updatedddd successfully");
+          setMessage("about us updated successfully");
           console.log(resJson)
           getaboutUs()
+          setTimeout(()=>{setMessage("")}, 5000);
         } else {
           setMessage("Some error occured");
         }

@@ -151,8 +151,10 @@ console.log(id)
         if (res.status === 200) {
           setMessage("service updatedd successfully");
           console.log(resJson)
+        
 
           getserviceCatDetails()
+          setTimeout(()=>{setMessage("")}, 5000);
         } else {
           alert("Some error occured");
         }
