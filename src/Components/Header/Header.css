@@ -1,0 +1,35 @@
+.sec-hero {
+/*     background: url('http://prod-upp-image-read.ft.com/c288bdfa-671f-11e7-9a66-93fb352ba1fe');
+ */    background: url('/assets/hero.jpg');
+        text-align: center;
+        width: 100%;
+        height: auto;
+        background-size: cover;
+        /* background-attachment: fixed; */
+        position: relative;
+        overflow: hidden;
+        /* border-radius: 0 0 85% 85% / 30%; */
+        margin-top: 76px;
+        background-position: center;
+    }
+    .sec-hero .sec-overlay{
+        width: 100%;
+        height: 510px;
+        padding:70px 50px;
+        color: #FFF;
+        text-shadow: 1px 1px 1px #333;
+        /* background-image: linear-gradient( 135deg, #9f05ff69 10%, #fd5e086b 100%); */
+        background-image: linear-gradient( 135deg, #282626 10%, #b9b9b980 100%);
+        
+    }
+    
+    .sec-read-btn{
+        border: none;
+        outline: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        color: #fff;
+        background: #db5f5b;
+        margin-bottom: 50px;
+        box-shadow: 0 3px 20px 0 #0000003b;
+    }

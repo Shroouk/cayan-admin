@@ -1,0 +1,38 @@
+.career-wrapper{
+    margin: 90px auto;
+}
+
+.career-heading{
+    font-size: xxx-large;
+    padding: 45px;
+    font-weight: 700;
+}
+
+.career-section-title::after{
+    margin-top: 5px;
+}
+
+.career-section-p{
+    font-size: 0.9rem;
+}
+
+@media (max-width: 769px) {
+
+    .section-title::after{
+        margin-left: unset;
+    }
+    .career-heading {
+        font-size: xx-large;
+    }
+    
+}
+
+.fa-angle-right{
+    color: #db5f5b;
+    font-size: 24px !important;
+}
+
+.career-p{
+    font-size: 20px;
+    font-style: italic;
+}

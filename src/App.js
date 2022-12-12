@@ -1,112 +1,67 @@
 import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter, Route , Routes} from 'react-router-dom';
 
-import React, { useEffect, useState } from "react";
-import { useParams, withRouter } from "react-router";
-import axios from "axios";
 
-import { BrowserRouter, Navigate, Route , Routes} from 'react-router-dom';
-
-import Dashboard from './Components/Dashboard/Dashboard';
-import AdminAbout from './Components/AdminAbout/AdminAbout';
-import AdminCareers from './Components/AdminCareers/AdminCareers';
-import AdminServices from './Components/AdminServices/AdminServices';
-
-import EditJob from './Components/EditJob/EditJob';
-import EditService from './Components/EditService/EditService';
-
-import Login from './Components/Login/Login';
-
-import NewMainFunc from './Components/NewMainFunc/NewMainFunc';
-import EditMainFunc from './Components/EditMainFunc/EditMainFunc';
-
-/* import NewAboutUs from './Components/NewAboutUs/NewAboutUs'; */
-import AdminContact from './Components/AdminContact/AdminContact';
-import AdminMainFunctions from './Components/AdminMainFunctions/AdminMainFunctions';
-import NewServiceCategory from './Components/NewServiceCategory/NewServiceCategory';
-import EditServiceCategory from './Components/EditServiceCategory/EditServiceCategory';
-import ServiceCatDetails from './Components/ServiceCatDetails/ServiceCatDetails';
-import NewService from './Components/NewService/NewService';
-import EditServiceList from './Components/EditServiceList/EditServiceList';
-import NewServiceList from './Components/NewServiceList/NewServiceList';
+import Home from './Components/Home/Home';
+import Navbar from './Components/Navigation/Navbar';
+import Footer from './Components/Footer/Footer';
+import AboutUs from './Components/AboutUs/AboutUs';
+import ContactUs from './Components/ContactUs/ContactUs';
+//import Services from './Components/Services/Services';
+import Careers from './Components/Careers/Careers';
+import JobDetails from './Components/JobDetails/JobDetails';
+import SingleService from './Components/SingleService/SingleService';
+//import MainFunction from './Components/MainFunction/MainFunction';
+import NotFound from './Components/NotFound/NotFound';
 
 
 
-const App  = ()=> {
-
-
-  const [isLogged, setisLogged] = useState('')
+class App extends Component {
 
  
 
-
-  const loginHandler = (logged)=>{
-    setisLogged(logged)
-  }
-
-
-
-  return (
-   
+  render(){
     
 
-
-
-
-
+   // console.log("render");
+  return (
     <BrowserRouter>
     <div className="App">
 
- 
-    
-
-  
-  
+    <Navbar/>
         <Routes>
+        {/* <Route exact path='/' component={Home}/> */}
+        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<AboutUs/>} />
+        <Route path="/contact" element={<ContactUs/>} />
+        <Route path="/single-service/:service_id/:id" element={<SingleService />} />
+
+     
+{/*         <Route exact path="/single-service/:service_id/:id" render={(props) => <SingleService {...props} /> } /> 
+ */}        
 
 
-
-         <Route path="/" element={<Login  onLoginChangeHandler={loginHandler}/>} /> 
-         {console.log(isLogged)}
-
-         <Route path="/dashboard" element={isLogged ? <Dashboard /> : <Navigate to='/'/>}/>
-         <Route path="/admin-about" element={isLogged ? <AdminAbout /> : <Navigate to='/'/>}/>
-         <Route path="/servicecatdetails/:id" element={isLogged ? <ServiceCatDetails/> : <Navigate to='/'/>}/>
-         <Route path="/admin-careers" element={isLogged ? <AdminCareers /> : <Navigate to='/'/>}/>
-         <Route path="/admin-services" element={isLogged ? <AdminServices /> : <Navigate to='/'/>}/>
-         <Route path="/admin-contact" element={isLogged ? <AdminContact/> : <Navigate to='/'/>}/>
-         <Route path="/admin-main-funcs" element={isLogged ? <AdminMainFunctions/> : <Navigate to='/'/>}/>
 
         
-        {/* <Route path="/admin-about" element={<AdminAbout/>} /> */}
- 
+        <Route path="/careers" element={<Careers/>} />
 
-        {/* <Route path="/edit-job" element={<EditJob/>} />
-        <Route path="/edit-service/:id" element={<EditService/>} /> */}
-
-        <Route path="/edit-mainfunc/:id/:func" element={<EditMainFunc/>} />
-        <Route path="/edit-servicecat/:id/:service" element={<EditServiceCategory/>} />
-        <Route path="/edit-service-list/:mainid/:id" element={<EditServiceList/>} />
-
-        <Route path="/new-service-list/:mainid/:id" element={<NewServiceList/>} />
-
-        <Route path="/new-main-func" element={<NewMainFunc/>} />
-        {/* <Route path="/new-about-us" element={<NewAboutUs/>} /> */}
-        <Route path="/new-service-category" element={<NewServiceCategory/>} />
-        <Route path="/new-service/:id" element={<NewService/>} />
-
-        <Route exact path='/' component={Login}/>
+        <Route path="/career/vacancy/:id" element={<JobDetails/>} />
+        {/* <Route path="/details" element={<JobDetails/>} /> */}
+        <Route path="/single-service" element={<SingleService/>} />
         
+        <Route path='*' element={<NotFound />}/>
         </Routes>
         
-     
+     <Footer/>
 
     </div>
     </BrowserRouter>
     
+    
   );
- 
+  }
 }
 
-
 export default App;
- 

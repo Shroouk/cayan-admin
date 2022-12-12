@@ -1,0 +1,10 @@
+.not-found-wrapper{
+    margin-top: 200px;
+    text-align: center;
+}
+.not-found-wrapper h2{
+    color: #db5f5b;
+    font-weight: 900;
+    font-size: 5rem;
+    
+}

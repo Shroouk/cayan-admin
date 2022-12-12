@@ -1,0 +1,19 @@
+.page-footer{
+    background-color: #151515;
+    color: #fff;
+    padding: 50px 50px 20px 50px;
+}
+
+.page-footer p{
+    color: #ccc;
+}
+.page-footer a{
+    font-size: 28px;
+    color: #fff;
+}
+.page-footer a:hover{
+    color: #db5f5b;
+}
+.footer-cayan{
+    color: #db5f5b;
+}

@@ -1,0 +1,31 @@
+.details-wrapper{
+    margin: 90px auto;
+}
+
+.cayan-mail{
+    color: #db5f5b;
+    font-weight: 800;
+    margin: 20px;
+    font-size: 1.5rem;
+}
+.posted-date{
+    color: #b3b3b3;
+    margin-bottom: 35px;
+}
+
+.details-row{
+    margin-bottom: 8px;
+}
+
+.details-col{
+    color: #db5f5be6;
+}
+
+
+
+@media (max-width: 768px) {
+    .cayan-mail {
+        font-size: 1rem;
+    }
+   
+  }

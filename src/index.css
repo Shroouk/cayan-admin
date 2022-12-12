@@ -20,22 +20,3 @@ body {
 a {
   text-decoration: none!important;
 }
-
-.main-heading{
-  color: #292929;
-}
-
-.td-action{
-  width: 18%;
-}
-.td-actionlist{
-  width: 33%;
-}
-
-.save-btn{
-  padding: 15px 45px !important;
-}
-
-.content-del-btn{
-  margin-left: 10px;
-}
